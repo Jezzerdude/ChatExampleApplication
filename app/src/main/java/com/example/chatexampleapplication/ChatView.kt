@@ -9,6 +9,7 @@ import com.example.chatexampleapplication.databinding.ChatexamplelayoutBinding
 class ChatView: AppCompatActivity() {
     private lateinit var binding: ChatexamplelayoutBinding
     private val viewModel: ChatViewModel by viewModels()
+    private val filename = "/ChatLog.txt"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,7 +24,8 @@ class ChatView: AppCompatActivity() {
 
     private fun setUpClickListener() {
         binding.submitButton.setOnClickListener {
-            viewModel.createMessageFromInput(binding.enterText.text.toString())
+            val fileDir = filesDir.toString() + filename
+            viewModel.createMessageFromInput(fileDir, binding.enterText.text.toString())
         }
     }
 

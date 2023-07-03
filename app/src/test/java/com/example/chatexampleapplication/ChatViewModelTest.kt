@@ -2,13 +2,10 @@ package com.example.chatexampleapplication
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import io.mockk.MockKAnnotations
-import io.mockk.coEvery
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import org.junit.Test
-
-import org.junit.Assert.*
+import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Rule
+import org.junit.Test
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -26,16 +23,17 @@ class ChatViewModelTest {
         MockKAnnotations.init(this, relaxUnitFun = true)
         classUnderTest = ChatViewModel()
     }
-    fun getTimeStamp()= SimpleDateFormat("HH:mm:ss", Locale.ENGLISH).format(Date())
+    fun getTimeStamp()= SimpleDateFormat("HH:mm ", Locale.ENGLISH).format(Date())
 
     @Test
     fun createTestMessage(){
         // Given
+        val testFileName = ""
         val testMessage = "Test Message"
         val timeStamp: String = getTimeStamp()
 
         // When
-        classUnderTest.createMessageFromInput(testMessage)
+        classUnderTest.createMessageFromInput(testFileName, testMessage)
 
         // Then
         val expected = ChatViewModel.State.Content(listOf(ChatMessage(timeStamp, testMessage)))
@@ -45,13 +43,14 @@ class ChatViewModelTest {
     @Test
     fun createAdditionalMessages(){
         // Given
+        val testFileName = ""
         val testMessage1 = "Test Message"
         val testMessage2 = "Test 2nd Message"
         val timeStamp: String = getTimeStamp()
 
         // When
-        classUnderTest.createMessageFromInput(testMessage1)
-        classUnderTest.createMessageFromInput(testMessage2)
+        classUnderTest.createMessageFromInput(testFileName, testMessage1)
+        classUnderTest.createMessageFromInput(testFileName, testMessage2)
 
         // Then
         val expected = ChatViewModel.State.Content(listOf(ChatMessage(timeStamp, testMessage1),
@@ -63,13 +62,14 @@ class ChatViewModelTest {
     @Test
     fun noMessageCreatedWhenMessageIsBlank(){
         // Given
+        val testFileName = ""
         val testMessage = "Test Message"
         val blankMessage = ""
         val timeStamp: String = getTimeStamp()
 
         // When
-        classUnderTest.createMessageFromInput(testMessage)
-        classUnderTest.createMessageFromInput(blankMessage)
+        classUnderTest.createMessageFromInput(testFileName, testMessage)
+        classUnderTest.createMessageFromInput(testFileName, blankMessage)
 
         // Then
         val expected = ChatViewModel.State.Content(listOf(ChatMessage(timeStamp, testMessage)))
@@ -79,11 +79,12 @@ class ChatViewModelTest {
     @Test
     fun noMessageCreatedWhenMessageIsBlank2(){
         // Given
+        val testFileName = ""
         val blankMessage = ""
         val timeStamp: String = getTimeStamp()
 
         // When
-        classUnderTest.createMessageFromInput(blankMessage)
+        classUnderTest.createMessageFromInput(testFileName, blankMessage)
 
         // Then
         val expected = null
